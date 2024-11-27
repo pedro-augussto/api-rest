@@ -1,13 +1,26 @@
-import express from "express"
+import express from "express";
 
-const PORT = 3333
+import { myMiddleware} from "./middlewares/my-middlewares"
 
-const app = express()
+const PORT = 3333;
 
-app.get("/products/:id/:user", (request, response) => {
-  const { id , user } = request.params
+const app = express();
+app.use(express.json());
 
-  response.send(`Produto ${id} do usuario ${}`)
-})
+app.use(myMiddleware)
 
-app.listen(PORT , () => console.log(`Server is running on port ${PORT}`))
+app.get("/products", (request, response) => {
+  const { page, limit } = request.query;
+
+  response.send(`Pagina ${page} de ${limit}`);
+});
+
+app.post("/products", (request, response) => {
+  const { name, price } = request.body;
+
+  //response.send(`Produto: ${name} Valor: R$ ${price}`)
+
+  response.status(201).json({ name, price });
+});
+
+app.listen(PORT, () => console.log(`Server is running on port ${PORT}`));
