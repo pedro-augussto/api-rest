@@ -18,9 +18,12 @@ class ProductsController {
   create(request: Request, response: Response) {
     const { name, price } = request.body;
 
-    //throw new Error("ERRO DE EXEMPLO!");
+    if(!name || !price){
+      throw new AppError("Nome e preço do produto são obrigatorio!")
+    }
 
-    throw new AppError("ERRO DE EXEMPLO!");
+    //throw new Error("ERRO DE EXEMPLO!");
+    //throw new AppError("ERRO DE EXEMPLO!");
 
     response.status(201).json({ name, price, user_id: request.user_id });
   }
